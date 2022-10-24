@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { I18nState } from './types'
+import { I18nState } from '../types'
 
 const useI18nStore = defineStore('i18n', {
   state: () => ({

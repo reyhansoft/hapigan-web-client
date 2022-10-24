@@ -1,4 +1,4 @@
-import { test, expect, beforeEach } from 'vitest'
+import { test, expect, afterEach } from 'vitest'
 import useI18nStore from './useI18nStore'
 import useI18n from './useI18n'
 
@@ -14,6 +14,10 @@ vi.mock('./useI18nStore', () => {
     return _cache
   }
   return { default: useStore }
+})
+
+afterEach(() => {
+  vi.clearAllMocks()
 })
 
 test('should call store translate', () => {

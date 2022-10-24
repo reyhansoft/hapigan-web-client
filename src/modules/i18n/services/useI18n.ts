@@ -1,5 +1,5 @@
 import useI18nStore from "./useI18nStore"
-const i18n = () => {
+const useI18n = () => {
   const store = useI18nStore()
   return {
     t (msg: string, ...args: Array<string>) {
@@ -12,4 +12,4 @@ const i18n = () => {
   }
 }
 
-export default i18n
+export default useI18n

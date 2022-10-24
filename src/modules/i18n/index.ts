@@ -1,7 +1,2 @@
-import useI18nStore from "./services/useI18nStore"
-import useI18n from './services/useI18n'
-
-export default {
-  useI18n,
-  useI18nStore
-}
+export { default as useI18nStore } from "./services/useI18nStore"
+export { default as useI18n } from './services/useI18n'
