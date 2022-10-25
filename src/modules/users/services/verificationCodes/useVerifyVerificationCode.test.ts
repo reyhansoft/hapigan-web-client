@@ -174,3 +174,35 @@ test('request resending code should call requst code', async () => {
   expect(canResendCode.value).toBeTruthy()
   expect(requestVerificationCode.request).toBeCalled()
 })
+
+test('zero remainig seconds when canResend is true', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  store.nextTryInSeconds = 60
+  const now = new Date()
+  now.setMinutes(now.getMinutes() - 2)
+  store.lastTry = now
+  const expectedRemainigSeconds = 0
+  const { remainingSecondsForResend } = useVerifyVerificationCode()
+
+  // assert
+  expect(remainingSecondsForResend.value).toBe(expectedRemainigSeconds)
+
+})
+
+test('non zero remaining when can resend is false', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  store.nextTryInSeconds = 120
+  const now = new Date()
+  now.setMinutes(now.getMinutes() - 1)
+  store.lastTry = now
+  const maxRemaining = 60
+  const minRemaining = 58
+  const { remainingSecondsForResend } = useVerifyVerificationCode()
+
+  // assert
+  expect(remainingSecondsForResend.value)
+    .lessThanOrEqual(maxRemaining)
+    .greaterThanOrEqual(minRemaining)
+})

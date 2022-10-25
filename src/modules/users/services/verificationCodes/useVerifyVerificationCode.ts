@@ -14,8 +14,12 @@ const useVerifyVerificationCode = () => {
   const { request } = useRequestVerificationCode()
   const { t } = useI18n()
   const canResendCode = computed(() => lastTry !== null && ((new Date().getTime() - lastTry.getTime()) / 1000) >= nextTryInSeconds)
-
-  return { 
+  const remainingSecondsForResend = computed(() => {
+    if (lastTry === null || canResendCode.value) return 0
+    return Math.floor((new Date().getTime() - lastTry.getTime()) / 1000)
+  })
+  return {
+    remainingSecondsForResend,
     canResendCode,
     async resendCode () {
       if (!canResendCode.value) {
