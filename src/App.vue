@@ -6,6 +6,6 @@ import NotificationsContainer from '@/modules/notifications/components/Notificat
 </script>
 
 <template>
-  <MainMenu />
+  <router-view></router-view>
   <NotificationsContainer />
 </template>
