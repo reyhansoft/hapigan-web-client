@@ -18,3 +18,9 @@ export interface ChangeToVerifyArg {
 export interface RequestVerificationCodeReponse {
   nextTryInSeconds: number
 }
+
+export interface VerifyVerificationCodeResponse {
+  isAuthenticated: boolean
+  name: string
+  token: string
+}
