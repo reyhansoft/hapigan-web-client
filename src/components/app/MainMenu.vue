@@ -6,8 +6,8 @@
       </a>
       <div class="grow"></div>
       <div>
-        <LinkButton type="light mx-2">Sign up</LinkButton>
-        <LinkButton type="primary">log in</LinkButton>
+        <LinkButton type="light mx-2">{{ $t('Sign up') }}</LinkButton>
+        <LinkButton type="primary">{{ $t('Log in') }}</LinkButton>
       </div>
     </nav>
   </header>
@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import LinkButton from '@/components/ui/forms/LinkButton.vue'
 import MainLogo from './MainLogo.vue'
+
 </script>
 
 <style>
