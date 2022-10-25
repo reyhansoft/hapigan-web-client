@@ -7,6 +7,21 @@ import { useI18n } from '@/modules/i18n/'
 import { useNotifications } from "@/modules/notifications/"
 import { ApiError } from '@/modules/apiClient/types'
 import useUserAuth from '../useUserAuth'
+import useRequestVerificationCode from './useRequestVerificationCode'
+
+vi.mock('./useRequestVerificationCode', () => {
+  let _cache: any = null
+
+  const useRequestVerificationCode = () => {
+    if (!_cache) {
+      _cache = {
+        request: vi.fn()
+      }
+    }
+    return _cache
+  }
+  return { default: useRequestVerificationCode }
+})
 
 vi.mock('../../stores/verificationCodesStore', () => {
   let _cache: any = null
@@ -122,4 +137,40 @@ test('verify code failed should show error notification', async () => {
   expect(setLoggedIn).not.toBeCalled()
   expect(error).toBeCalledWith(ERORR_MESSAGE)
   expect(result).toBeFalsy()
+})
+
+test('request resending code before next try time should show error notification', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  store.nextTryInSeconds = 60
+  store.lastTry = new Date()
+  const { resendCode, canResendCode } = useVerifyVerificationCode()
+  const requestVerificationCode = useRequestVerificationCode()
+  const { error } = useNotifications()
+
+  // act
+  await resendCode()
+
+  // assert
+  expect(canResendCode.value).toBeFalsy()
+  expect(error).toBeCalled()
+  expect(requestVerificationCode.request).not.toBeCalled()
+})
+
+test('request resending code should call requst code', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  store.nextTryInSeconds = 60
+  const now = new Date()
+  now.setMinutes(now.getMinutes() - 2)
+  store.lastTry = now
+  const { resendCode, canResendCode } = useVerifyVerificationCode()
+  const requestVerificationCode = useRequestVerificationCode()
+
+  // act
+  await resendCode()
+
+  // assert
+  expect(canResendCode.value).toBeTruthy()
+  expect(requestVerificationCode.request).toBeCalled()
 })
