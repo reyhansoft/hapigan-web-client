@@ -1,4 +1,4 @@
-import { test, vi, afterEach } from 'vitest'
+import { test, vi, afterEach, Mock } from 'vitest'
 import { VerificationCodeState, VerificationCodeStep } from '../../types'
 import { useVerificationCodeStore } from '../../stores/verificationCodesStore'
 import useRequestVerificationCode from './useRequestVerificationCode'
@@ -78,41 +78,55 @@ afterEach(() => {
 
 test('request should call api', async () => {
   // arrange
-  const mobile = "+9800000"
-  const { request } = useRequestVerificationCode()
+  const { mobile, request } = useRequestVerificationCode()
+  mobile.value = '+989123456789'
 
   // act
-  await request(mobile)
+  await request()
 
   // assert
-  expect(requestVerificationCode).toBeCalledWith(mobile)
+  expect(requestVerificationCode).toBeCalledWith(mobile.value)
 })
 
 test('request verification code successfully', async () => {
   // arrange
   const { step, changeToVerify } = useVerificationCodeStore()
-  const { request } = useRequestVerificationCode()
-  const mobile = "+9800000"
+  const { mobile, request } = useRequestVerificationCode()
+  mobile.value = "+989123456789"
 
   // act
-  await request(mobile)
+  await request()
 
   // assert
-  expect(changeToVerify).toBeCalledWith(expect.objectContaining({ mobile }))
+  expect(changeToVerify).toBeCalledWith(expect.objectContaining({ mobile: mobile.value }))
 })
 
 
 test('request failed', async () => {
   // arrange
   const { step, changeToVerify } = useVerificationCodeStore()
-  const { request } = useRequestVerificationCode()
-  const mobile = "ERROR_API"
+  const { mobile, request } = useRequestVerificationCode()
+  mobile.value = "+989123456789"
   const { error } = useNotifications()
-
+  ;(requestVerificationCode as Mock).mockImplementation(() => {
+    throw new ApiError('FAILED', 400)
+  })
   // act
-  await request(mobile)
+  await request()
 
   // assert
   expect(changeToVerify).not.toBeCalled()
   expect(error).toBeCalled()
+})
+
+test('invalid mobile should not call api', async () => {
+  // arrange
+  const { mobile, request } = useRequestVerificationCode()
+  mobile.value = ''
+
+  // act
+  await request()
+
+  // assert
+  expect(requestVerificationCode).not.toBeCalled()
 })

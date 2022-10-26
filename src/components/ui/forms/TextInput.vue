@@ -5,10 +5,19 @@
       :placeholder="props.placeholder"
       v-model="model"
       class="input"
+      :class="classes"
+      @focus=""
       />
+      <div 
+        class="text-red-500 text-sm mt-1"
+        v-if="props.validator && props.validator.isValid.value === false"
+        v-for="(message, i) of props.validator.message.value"
+        :key="i">{{ message }}</div>
   </fieldset>
 </template>
 <script lang="ts" setup>
+import { Validator } from '@/modules/validations/types';
+import { computed } from '@vue/reactivity';
 import { defineProps, ref, defineEmits, watch } from 'vue'
 
 const props = defineProps({
@@ -21,8 +30,22 @@ const props = defineProps({
   },
   label: {
     type: String
+  },
+  validator: {
+    type: Object
   }
 })
+
+const classes = computed(() => ({
+  '!border-red-500': props.validator != null && props.validator.isValid.value === false,
+  '!focus:border-red-500': props.validator != null && props.validator.isValid.value === false
+}))
+
+const onFocus = () => {
+  if (props.validator) {
+    (props.validator as Validator).touched()
+  }
+}
 
 const emits = defineEmits(['update:modelValue'])
 const model = ref(props.modelValue)

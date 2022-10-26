@@ -8,6 +8,7 @@
     <TextInput
       v-model="mobile"
       class="mt-10"
+      :validator="mobileValidator"
       :label="$t('Phone number')"
       :placeholder="$t('+9891xxxxxxxx')" />
     <ActionButton
@@ -30,14 +31,14 @@ import { ref } from 'vue'
 import ButtonTypes from '@/components/ui/forms/buttonTypes'
 import useRequestVerificationCode from '../../services/verificationCodes/useRequestVerificationCode'
 
-const { 
-  mobile: currentMobile,
+const {
+  mobileValidator,
+  mobile,
   request,
   isProcessing
 } = useRequestVerificationCode()
 
-const mobile = ref(currentMobile)
 const onClick = () => {
-  request(mobile.value)
+  request()
 }
 </script>

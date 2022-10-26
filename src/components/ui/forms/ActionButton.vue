@@ -41,3 +41,7 @@ const classes = computed(() => ({
 
 const emits = defineEmits(['click'])
 </script>
+
+<style lang="postcss">
+@import 'buttons.css'
+</style>
