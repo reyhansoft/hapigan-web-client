@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import Home from '@/pages/Home.vue'
-import MobileVerificationCode from '@/modules/users/components/VerificationCode/MobileVerificationCode.vue'
+import Register from '@/modules/users/pages/register.vue'
 
 const routes : Array<RouteRecordRaw> = [
   { path: '/', component: Home },
-  { path: '/register', component: MobileVerificationCode }
+  { path: '/register', component: Register }
 ]
 
 const router = createRouter({
