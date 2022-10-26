@@ -11,10 +11,11 @@ import { useVerificationCodeStore } from '../../stores/verificationCodesStore'
 import { computed, onMounted, onUnmounted } from '@vue/runtime-core'
 import { VerificationCodeStep } from '../../types'
 
-const { step, changeToRequest, clear } = useVerificationCodeStore()
+const store = useVerificationCodeStore()
+const { changeToRequest, clear } = useVerificationCodeStore()
 
-const isRegister = computed(() => step === VerificationCodeStep.Request)
-const isVerify = computed(() => step === VerificationCodeStep.Verify)
+const isRegister = computed(() => store.step === VerificationCodeStep.Request)
+const isVerify = computed(() => store.step === VerificationCodeStep.Verify)
 
 onMounted(() => {
     changeToRequest()

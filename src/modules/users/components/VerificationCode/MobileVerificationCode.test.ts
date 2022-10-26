@@ -1,24 +1,18 @@
-import { render } from '@testing-library/vue'
+import { render, waitFor } from '@testing-library/vue'
 import MobileVerificationCode from './MobileVerificationCode.vue'
 import { expect, test, vi, afterEach } from 'vitest'
 import { useVerificationCodeStore } from '../../stores/verificationCodesStore'
 import { VerificationCodeStep } from '../../types'
 import { ref } from 'vue'
+import { setActivePinia, createPinia, Pinia } from 'pinia'
+import { i18n } from '@/modules/i18n'
+import wait from '@/services/common/wait'
+import router from '@/router'
 
-vi.mock('../../stores/verificationCodesStore', () => {
-  let _cache: any = null
-
-  const obj = () => {
-    if (!_cache) {
-      _cache = {
-        clear: vi.fn(),
-        changeToRequest: vi.fn(),
-        step: VerificationCodeStep.Request
-      }
-    }
-    return _cache
-  }
-  return { useVerificationCodeStore: obj }
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
 })
 
 afterEach(() => {
@@ -27,30 +21,47 @@ afterEach(() => {
 
 test('should render regitser step', () => {
   // arrange
-  const { getByTestId } = render(MobileVerificationCode, {})
+  const { queryByTestId } = render(MobileVerificationCode, {
+    global: {
+      plugins: [i18n, router, pinia]
+    }
+  })
   // act
 
   // assert
-  expect(getByTestId("verification-code-request")).not.toBe(null)
+  expect(queryByTestId("verification-code-request")).not.toBe(null)
+  expect(queryByTestId("verification-code-verify")).toBe(null)
 })
 
 test('changeToRequest should be called on mount', () => {
   // arrange
-  const { getByTestId } = render(MobileVerificationCode, {})
-  const { changeToRequest } = useVerificationCodeStore()
+  let store = useVerificationCodeStore()
+  store.step = VerificationCodeStep.Verify
+  render(MobileVerificationCode, {
+    global: {
+      plugins: [i18n, pinia, router]
+    }
+  })
 
   // assert
-  expect(changeToRequest).toBeCalled()
+  expect(store.step).toBe(VerificationCodeStep.Request)
 })
 
-test('should render verify step', () => {
+test('should render verify step', async () => {
   // arrange
   const store = useVerificationCodeStore()
 
   // act
+  const { queryByTestId } = render(MobileVerificationCode, {
+    global: {
+      plugins: [i18n, pinia, router]
+    }
+  })
   store.step = VerificationCodeStep.Verify
-  const { getByTestId } = render(MobileVerificationCode, {})
 
   // assert
-  expect(getByTestId("verification-code-verify")).not.toBe(null)
+  await waitFor(() => {
+    expect(queryByTestId("verification-code-request")).toBe(null)
+    expect(queryByTestId("verification-code-verify")).not.toBe(null)
+  })
 })
