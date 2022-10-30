@@ -6,6 +6,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  define: {
+    BASE_URL: JSON.stringify('http://dapi.hapigan.ir:49153/')
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
