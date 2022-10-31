@@ -70,7 +70,7 @@ export async function post<T>(url: string, data: any, config?: RequestConfig): P
       data,
       ...config
     })
-  ) as T
+  ).data as T
 }
 export const put = (url: string, data: any, config?: RequestConfig) =>
   request({

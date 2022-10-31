@@ -8,6 +8,15 @@ import { useNotifications } from "@/modules/notifications/"
 import { ApiError } from '@/modules/apiClient/types'
 import useUserAuth from '../useUserAuth'
 import useRequestVerificationCode from './useRequestVerificationCode'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
+
 
 vi.mock('./useRequestVerificationCode', () => {
   let _cache: any = null
@@ -23,23 +32,24 @@ vi.mock('./useRequestVerificationCode', () => {
   return { default: useRequestVerificationCode }
 })
 
-vi.mock('../../stores/verificationCodesStore', () => {
-  let _cache: any = null
+// vi.mock('../../stores/verificationCodesStore', () => {
+//   let _cache: any = null
 
-  const useStore = () => {
-    if (!_cache) {
-      _cache = {
-        mobile: '',
-        lastTry: null,
-        nextTryInSeconds: 0,
-        step: VerificationCodeStep.Request,
-        changeToVerify: vi.fn()
-      }
-    }
-    return _cache
-  }
-  return { useVerificationCodeStore: useStore }
-})
+//   const useStore = () => {
+//     if (!_cache) {
+//       _cache = {
+//         mobile: '',
+//         lastTry: null,
+//         nextTryInSeconds: 0,
+//         step: VerificationCodeStep.Request,
+//         changeToVerify: vi.fn(),
+//         changeToRequest: vi.fn()
+//       }
+//     }
+//     return _cache
+//   }
+//   return { useVerificationCodeStore: useStore }
+// })
 
 vi.mock('../useUserAuth', () => {
   let _cached: any = null
@@ -95,8 +105,8 @@ test('code verified should set user logged in and show success messges', async (
   // arrange
   const store = useVerificationCodeStore()
   store.mobile = '+980000'
-  const { verify } = useVerifyVerificationCode()
-  const code = "VERIFICATION_CODE"
+  const { verify, code } = useVerifyVerificationCode()
+  code.value = "VERIFICATION_CODE"
   const { setLoggedIn } = useUserAuth()
   const { success } = useNotifications()
 
@@ -107,20 +117,21 @@ test('code verified should set user logged in and show success messges', async (
   }))
 
   // act
-  const result = await verify(code)
+  const result = await verify()
 
   // assert
-  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code)
+  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value)
   expect(setLoggedIn).toBeCalled()
   expect(success).toBeCalled()
   expect(result).toBeTruthy()
 })
 
 test('verify code failed should show error notification', async () => {
+  // arrange
   const store = useVerificationCodeStore()
   store.mobile = '+980000'
-  const { verify } = useVerifyVerificationCode()
-  const code = "VERIFICATION_CODE"
+  const { verify, code } = useVerifyVerificationCode()
+  code.value = "VERIFICATION_CODE"
   const { setLoggedIn } = useUserAuth()
   const { error } = useNotifications()
   const ERORR_MESSAGE = 'API ERROR MESSAGE'
@@ -130,10 +141,10 @@ test('verify code failed should show error notification', async () => {
   })
 
   // act
-  const result = await verify(code)
+  const result = await verify()
 
   // assert
-  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code)
+  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value)
   expect(setLoggedIn).not.toBeCalled()
   expect(error).toBeCalledWith(ERORR_MESSAGE)
   expect(result).toBeFalsy()
@@ -205,4 +216,30 @@ test('non zero remaining when can resend is false', async () => {
   expect(remainingSecondsForResend.value)
     .lessThanOrEqual(maxRemaining)
     .greaterThanOrEqual(minRemaining)
+})
+
+test('back to change mobile', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  const { changePhoneNumber } = useVerifyVerificationCode()
+
+  // act
+  changePhoneNumber()
+
+  // assert
+  expect(store.step).toBe(VerificationCodeStep.Request)
+})
+
+test('api shound not be called if code is not valid', async () => {
+  // arrange
+  const store = useVerificationCodeStore()
+  store.mobile = '+980000'
+  const { verify } = useVerifyVerificationCode()
+
+  // act
+  const result = await verify()
+
+  // assert
+  expect(verifyVerificationCode).not.toBeCalled()
+  expect(result).toBeFalsy()
 })

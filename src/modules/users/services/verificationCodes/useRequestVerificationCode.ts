@@ -25,7 +25,6 @@ const useRequestVerificationCode = () => {
     isProcessing,
     mobile,
     request: async () => {
-      console.log('is valid : ' +validation.validate())
       if (!validation.validate()) {
         return
       }
