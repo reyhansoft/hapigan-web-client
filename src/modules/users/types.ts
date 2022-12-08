@@ -2,7 +2,8 @@ export type VerificationCodeState = {
   mobile: string,
   step: VerificationCodeStep,
   nextTryInSeconds: number,
-  lastTry: Date | null
+  lastTry: Date | null,
+  token: string | null
 }
 
 export enum VerificationCodeStep {
@@ -12,15 +13,23 @@ export enum VerificationCodeStep {
 
 export interface ChangeToVerifyArg {
   nextTryInSeconds: number,
-  mobile: string
+  mobile: string,
+  token: string
 }
 
 export interface RequestVerificationCodeReponse {
-  nextTryInSeconds: number
+  nextTryInSeconds: number,
+  success: boolean,
+  message: string,
+  token: string
 }
 
 export interface VerifyVerificationCodeResponse {
-  isAuthenticated: boolean
-  name: string
-  token: string
+  success: boolean
+  message: null | string
+  result: {
+    name: null | string
+    token: string
+    isCompleted: boolean
+  }
 }

@@ -46,7 +46,8 @@ vi.mock('../../api/verificationCodeApi', () => {
           throw new Error('UNEXPECTED_ERROR')
         }
         return {
-          nextTryInSeconds: 60
+          nextTryInSeconds: 60,
+          token: 'qaz'
         }
       })
     }
@@ -93,12 +94,23 @@ test('request verification code successfully', async () => {
   const { step, changeToVerify } = useVerificationCodeStore()
   const { mobile, request } = useRequestVerificationCode()
   mobile.value = "+989123456789"
+  const token = 'qaz'
+  ;(requestVerificationCode as Mock).mockImplementation(() => {
+    return {
+      success: true,
+      token: token,
+      nextTryInSeconds: 60
+    }
+  })
 
   // act
   await request()
 
   // assert
-  expect(changeToVerify).toBeCalledWith(expect.objectContaining({ mobile: mobile.value }))
+  expect(changeToVerify).toBeCalledWith(expect.objectContaining({ 
+    mobile: mobile.value,
+    token
+  }))
 })
 
 
@@ -107,16 +119,40 @@ test('request failed', async () => {
   const { step, changeToVerify } = useVerificationCodeStore()
   const { mobile, request } = useRequestVerificationCode()
   mobile.value = "+989123456789"
+  const message = 'error message'
   const { error } = useNotifications()
   ;(requestVerificationCode as Mock).mockImplementation(() => {
-    throw new ApiError('FAILED', 400)
+    return {
+      success: false,
+      token: null,
+      message,
+      nextTryInSeconds: 60
+    }
   })
   // act
   await request()
 
   // assert
   expect(changeToVerify).not.toBeCalled()
-  expect(error).toBeCalled()
+  expect(error).toBeCalledWith(message)
+})
+
+test('api failed', async () => {
+  // arrange
+  const { step, changeToVerify } = useVerificationCodeStore()
+  const { mobile, request } = useRequestVerificationCode()
+  mobile.value = "+989123456789"
+  const message = 'message'
+  const { error } = useNotifications()
+  ;(requestVerificationCode as Mock).mockImplementation(() => {
+    throw new ApiError(message, 400)
+  })
+  // act
+  await request()
+
+  // assert
+  expect(changeToVerify).not.toBeCalled()
+  expect(error).toBeCalledWith(message)
 })
 
 test('invalid mobile should not call api', async () => {

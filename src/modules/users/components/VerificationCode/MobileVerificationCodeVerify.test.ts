@@ -30,7 +30,8 @@ test('should show the mobile number that code sent to it', async () => {
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: 60,
-    mobile: '+989123456789'
+    mobile: '+989123456789',
+    token: '1qaz'
   })
   const { findByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -50,7 +51,8 @@ test('should update next resend timer', async () => {
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: 60,
-    mobile: '+989123456789'
+    mobile: '+989123456789',
+    token: '1qaz'
   })
   const { getByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -73,7 +75,8 @@ test('should show resend button after next try time passed', async () => {
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: 1,
-    mobile: '+989123456789'
+    mobile: '+989123456789',
+    token: '1qaz'
   })
   const { getByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -93,7 +96,8 @@ test('click on resend code should call requestVerificationCode', () => {
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: -1,
-    mobile
+    mobile,
+    token: '1qaz'
   })
   const { getByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -115,7 +119,8 @@ test('empty code should not invoke verifyVerificationCode', () => {
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: -1,
-    mobile
+    mobile,
+    token: '1qaz'
   })
   const { getByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -135,10 +140,12 @@ test('not empty code should invoke verifyVerificationCode', async () => {
   // arrange
   const mobile = '+989123456789'
   const code = '12345'
+  const token = '1qaz2wssx'
   const store = useVerificationCodeStore()
   store.changeToVerify({
     nextTryInSeconds: -1,
-    mobile
+    mobile,
+    token
   })
   const { getByPlaceholderText, getByText } = render(MobileVerificationCodeVerify, {
     global: {
@@ -152,6 +159,6 @@ test('not empty code should invoke verifyVerificationCode', async () => {
   const button = getByText('Verify')
   button.click()
   // assert
-  expect(verifyVerificationCode).toBeCalledWith(mobile, code)
+  expect(verifyVerificationCode).toBeCalledWith(mobile, code, token)
 })
 

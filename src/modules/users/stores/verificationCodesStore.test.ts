@@ -12,10 +12,13 @@ test('change step to verify', () => {
   const store = useVerificationCodeStore()
   const mobile = '+980000'
   const nextTryInSeconds = 60
+  const token = 'qaz'
+
   // act
   store.changeToVerify({
     nextTryInSeconds,
-    mobile
+    mobile,
+    token
   })
 
   // assert
@@ -23,6 +26,7 @@ test('change step to verify', () => {
   expect(store.step).toBe(VerificationCodeStep.Verify)
   expect(store.lastTry).lessThanOrEqual(new Date())
   expect(store.mobile).toBe(mobile)
+  expect(store.token).toBe(token)
 })
 
 
@@ -31,9 +35,11 @@ test('change step to request', () => {
   const store = useVerificationCodeStore()
   const mobile = '+980000'
   const nextTryInSeconds = 60
+  const token = 'qaz'
   store.changeToVerify({
     nextTryInSeconds,
-    mobile
+    mobile,
+    token
   })
 
   // act
@@ -48,7 +54,8 @@ test('clear state', () => {
   const store = useVerificationCodeStore()
   const mobile = '+980000'
   const nextTryInSeconds = 60
-  store.changeToVerify({ nextTryInSeconds, mobile })
+  const token = 'qaz'
+  store.changeToVerify({ nextTryInSeconds, mobile, token })
 
   // act
   store.clear()
@@ -58,4 +65,5 @@ test('clear state', () => {
   expect(store.step).toBe(VerificationCodeStep.Request)
   expect(store.lastTry).toBe(null)
   expect(store.nextTryInSeconds).toBe(0)
+  expect(store.token).toBe(null)
 })

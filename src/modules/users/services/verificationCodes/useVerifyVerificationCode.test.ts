@@ -105,22 +105,27 @@ test('code verified should set user logged in and show success messges', async (
   // arrange
   const store = useVerificationCodeStore()
   store.mobile = '+980000'
+  store.token = '1qaz'
   const { verify, code } = useVerifyVerificationCode()
   code.value = "VERIFICATION_CODE"
   const { setLoggedIn } = useUserAuth()
   const { success } = useNotifications()
 
   ;(verifyVerificationCode as Mock).mockImplementation(() => ({
-    isAuthenticated: true,
-    name: 'username',
-    token: 'token'
+    success: true,
+    message: null,
+    result: {
+      isCompleted: true,
+      name: 'username',
+      token: 'token'
+    }
   }))
 
   // act
   const result = await verify()
 
   // assert
-  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value)
+  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value, store.token)
   expect(setLoggedIn).toBeCalled()
   expect(success).toBeCalled()
   expect(result).toBeTruthy()
@@ -130,6 +135,7 @@ test('verify code failed should show error notification', async () => {
   // arrange
   const store = useVerificationCodeStore()
   store.mobile = '+980000'
+  store.token = '1qaz'
   const { verify, code } = useVerifyVerificationCode()
   code.value = "VERIFICATION_CODE"
   const { setLoggedIn } = useUserAuth()
@@ -144,7 +150,7 @@ test('verify code failed should show error notification', async () => {
   const result = await verify()
 
   // assert
-  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value)
+  expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value, store.token)
   expect(setLoggedIn).not.toBeCalled()
   expect(error).toBeCalledWith(ERORR_MESSAGE)
   expect(result).toBeFalsy()

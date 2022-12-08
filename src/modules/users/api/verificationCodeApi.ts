@@ -1,13 +1,14 @@
 import { RequestVerificationCodeReponse, VerifyVerificationCodeResponse } from "../types"
 import { post } from '@/modules/apiClient/baseApiClient'
 
-export const requestVerificationCode = (mobile: string): Promise<RequestVerificationCodeReponse> => 
-  post('/user/mobile/send_verification_code', {
-    mobile
+export const requestVerificationCode = (phoneNumber: string): Promise<RequestVerificationCodeReponse> => 
+  post('/user/phone/send_verification_code', {
+    phoneNumber
   })
 
-export const verifyVerificationCode = (mobile: string, code: string): VerifyVerificationCodeResponse => ({
-  isAuthenticated: true,
-  name: 'username',
-  token: 'token'
-})
+export const verifyVerificationCode = (phoneNumber: string, code: string, token: string): Promise<VerifyVerificationCodeResponse> =>
+  post('/user/phone/verify', {
+    phoneNumber,
+    code,
+    token
+  })

@@ -11,7 +11,7 @@ import useRequestVerificationCode from "./useRequestVerificationCode"
 
 const useVerifyVerificationCode = () => {
   const { setLoggedIn } = useUserAuth()
-  const { lastTry, nextTryInSeconds, mobile } = storeToRefs(useVerificationCodeStore())
+  const { lastTry, nextTryInSeconds, mobile, token } = storeToRefs(useVerificationCodeStore())
 
   const { changeToRequest } = useVerificationCodeStore()
   const { success, error } = useNotifications()
@@ -64,10 +64,14 @@ const useVerifyVerificationCode = () => {
       }
       isProcessing.value = true
       try {
-        const result = await verifyVerificationCode(mobile.value, code.value)
-        setLoggedIn(result)
-        success(t('You logged in successfully'))
-        return true
+        const result = await verifyVerificationCode(mobile.value, code.value, token.value || '')
+        if (result.success){
+          setLoggedIn(result.result)
+          success(t('You logged in successfully'))
+          return true
+        } else {
+          error(result.message || t('Something went wrong'))
+        }
       } catch(err) {
         if (err instanceof ApiError) {
           error(err.message)

@@ -31,7 +31,11 @@ const useRequestVerificationCode = () => {
       isProcessing.value = true
       try {
         const result = await requestVerificationCode(mobile.value)
-        store.changeToVerify({ mobile: mobile.value, ...result })
+        if (result.success) {
+          store.changeToVerify({ mobile: mobile.value, ...result })
+        } else {
+          error(result.message)
+        }
       } catch (e: any) {
         if (e instanceof ApiError) {
           error(e.message)
