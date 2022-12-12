@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { RequestConfig, RequestResult, ApiError, Api } from './types'
+import { RequestConfig, RequestResult, ApiError, Api, SecureRequestHandlerType } from './types'
 
 let baseUrl = BASE_URL
 
@@ -20,6 +20,9 @@ function getUrl(baseUrl: string, url: string): string {
 
 const headers: { [key: string]: string } = {}
 
+let secureRequestHandler: SecureRequestHandlerType = (config: RequestConfig) =>
+  new Promise((resolve, reject) => resolve(config))
+
 function request(config: RequestConfig) {
 
   config.headers = config.headers || {}
@@ -32,7 +35,6 @@ function request(config: RequestConfig) {
   if (config.method !== 'get') {
     config.headers = Object.assign(config.headers, { 'Content-Type': 'application/json' })
   }
-
 
   const handler = typeof config.handler === 'function' ? config.handler : axios
   delete config.handler
@@ -55,13 +57,30 @@ function request(config: RequestConfig) {
     })
 }
 
-export const get = (url: string, data: any = {}, config?: RequestConfig) =>
-  request({
-    method: 'get',
-    url: getUrl(baseUrl, url),
-    params: data,
-    ...config
-  })
+export async function get<T> (url: string, data: any = {}, config?: RequestConfig) : Promise<T> {
+  return (
+    await request({
+      method: 'get',
+      url: getUrl(baseUrl, url),
+      params: data,
+      ...config
+    })
+  ).data as T
+}
+
+export async function sget<T> (url: string, data: any = {}, config?: RequestConfig) : Promise<T> {
+  return (
+    await request(
+      await secureRequestHandler({
+        method: 'get',
+        url: getUrl(baseUrl, url),
+        params: data,
+        ...config
+      })
+    )
+  ).data as T
+}
+
 export async function post<T>(url: string, data: any, config?: RequestConfig): Promise<T> {
   return (
     await request({
@@ -93,4 +112,8 @@ export const removeHeader = (key: string) => {
 }
 export const setBaseUrl = (newBaseUrl: string) => {
   baseUrl = newBaseUrl
+}
+
+export const setSecureRequestHandler = (srh: SecureRequestHandlerType) => {
+  secureRequestHandler = srh
 }

@@ -6,6 +6,25 @@ export type VerificationCodeState = {
   token: string | null
 }
 
+export type UserState = {
+  isAuthenticated: boolean,
+  name: string,
+  isCompleted: boolean
+}
+
+export type SetAuthenticatedUserModel = {
+  name: string,
+  isCompleted: boolean
+}
+
+export type MeResult = {
+  isAuthenticated: boolean
+  token: null | string
+  name: null | string
+  isCompleted: boolean
+  expirationDateTime: Date
+}
+
 export enum VerificationCodeStep {
   Request,
   Verify

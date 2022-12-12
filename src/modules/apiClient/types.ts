@@ -28,6 +28,7 @@ export type Put = (url: string, data: any, config?: RequestConfig) => Promise<Re
 export type Del = (url: string, config?: RequestConfig) => Promise<RequestResult>
 export type AddHeader = (key: string, value: string) => void;
 export type RemoveHeader = (key: string) => void;
+export type SecureRequestHandlerType = (config: RequestConfig) => Promise<RequestConfig>
 
 export class ApiError extends Error {
   public readonly status: number
