@@ -11,4 +11,6 @@ export const verifyVerificationCode = (phoneNumber: string, code: string, token:
     phoneNumber,
     code,
     token
+  }, {
+    withCredentials: true
   })

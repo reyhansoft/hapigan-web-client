@@ -3,15 +3,15 @@
       v-if="!isInited && !isInitFailed"
       class="flex items-center w-fit absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       <LogoSpinner class="h-10 w-10" />
-      <h1 class="font-bold text-2xl text-center mx-2">Loading...</h1>
+      <h1 class="font-bold text-2xl text-center mx-2">{{ $t('Loading...') }}</h1>
     </div>
   <div
     v-if="!isInited && isInitFailed"
     class="max-w-max items-center p-8 w-fit text-center flex flex-col rounded bg-slate-50 shadow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
     <WarningIcon fill="red" class="w-16" />
-    <span class="text-xl font-bold mt-3">Oops!</span>
-    <span class="mx-2 whitespace-nowrap">Unfortunately initialization failed!</span>
-    <LinkButton class="w-fit mx-auto mt-3" @click="init">Try again</LinkButton>
+    <span class="text-xl font-bold mt-3">{{ $t('Oops!') }}</span>
+    <span class="mx-2 whitespace-nowrap">{{ $t('Unfortunately initialization failed!') }}</span>
+    <LinkButton class="w-fit mx-auto mt-3" @click="init">{{ $t('Try again') }}</LinkButton>
   </div>
   <router-view v-if="isInited"></router-view>
   <NotificationsContainer />
