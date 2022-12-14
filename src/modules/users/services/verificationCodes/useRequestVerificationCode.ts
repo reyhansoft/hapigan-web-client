@@ -34,7 +34,7 @@ const useRequestVerificationCode = () => {
         if (result.success) {
           store.changeToVerify({ mobile: mobile.value, ...result })
         } else {
-          error(result.message)
+          error(result.message || '')
         }
       } catch (e: any) {
         if (e instanceof ApiError) {

@@ -1,3 +1,5 @@
+import { BaseApiResult } from "../apiClient/types"
+
 export type VerificationCodeState = {
   mobile: string,
   step: VerificationCodeStep,
@@ -7,6 +9,7 @@ export type VerificationCodeState = {
 }
 
 export type UserState = {
+  isInited: boolean,
   isAuthenticated: boolean,
   name: string,
   isCompleted: boolean
@@ -25,6 +28,11 @@ export type MeResult = {
   expirationDateTime: Date
 }
 
+export type CompleteRegistrationRequest = {
+  name: string,
+  password: string
+}
+
 export enum VerificationCodeStep {
   Request,
   Verify
@@ -36,19 +44,16 @@ export interface ChangeToVerifyArg {
   token: string
 }
 
-export interface RequestVerificationCodeReponse {
+export interface RequestVerificationCodeReponse extends BaseApiResult {
   nextTryInSeconds: number,
-  success: boolean,
-  message: string,
   token: string
 }
 
-export interface VerifyVerificationCodeResponse {
-  success: boolean
-  message: null | string
+export interface VerifyVerificationCodeResponse extends BaseApiResult {
   result: {
     name: null | string
     token: string
-    isCompleted: boolean
+    isCompleted: boolean,
+    expirationDateTime: Date
   }
 }

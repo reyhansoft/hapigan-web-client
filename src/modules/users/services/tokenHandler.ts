@@ -1,5 +1,7 @@
 import { ApiError, RequestConfig, SecureRequestHandlerType } from "@/modules/apiClient/types"
+import { setSecureRequestHandler } from '@/modules/apiClient/baseApiClient'
 import wait from "@/services/common/wait"
+import { Router, useRouter } from "vue-router"
 import { getMe } from "../api/userApi"
 import { useUserStore } from "../stores/userStore"
 type Token = {
@@ -14,8 +16,10 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
     // ?
     throw new ApiError("Unauthorized access", -1)
   }
+  console.log('post secure')
   if (new Date() > _token!.expirationDateTime) {
     // token is expired
+    console.log('token is expired')
     if (!_isRenewingToken) {
       _isRenewingToken = true
       try{
@@ -45,6 +49,7 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       return await secureRequestHandler(config)
     }
   }
+  console.log('token is valid', _token)
   return {
     ...config,
     headers: {
@@ -57,8 +62,11 @@ export const setToken = (token: Token) => {
   _token = token
 }
 
-export const initializeUserToken = async () => {
-  try{
+export const initializeUserToken = async (router: Router) => {
+  
+  setSecureRequestHandler(secureRequestHandler)
+  try {
+  
     const userTokenResult = await getMe()
     const store = useUserStore()
 
@@ -71,12 +79,16 @@ export const initializeUserToken = async () => {
         token: userTokenResult.token || '',
         expirationDateTime: userTokenResult.expirationDateTime
       }
+      if (!userTokenResult.isCompleted) {
+        router.push('/register/completion')
+      }
     } else {
       _token = null
       store.setGuestUser()
     }
     return true
-  } catch {
+  } catch (e) {
+    console.log(e)
     return false
   }
 }

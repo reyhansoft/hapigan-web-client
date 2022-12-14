@@ -49,8 +49,8 @@ function request(config: RequestConfig) {
 
       if (error.response && error.response.status !== null) {
         status = error.response.status
-        errorMessage = error.response.data && error.response.data.error
-          ? error.response.data.error
+        errorMessage = error.response.data && error.response.data.message
+          ? error.response.data.message
           : 'Unexcepted error occured'
       }
       throw new ApiError(errorMessage, status)
@@ -91,6 +91,20 @@ export async function post<T>(url: string, data: any, config?: RequestConfig): P
     })
   ).data as T
 }
+
+export async function spost<T>(url: string, data: any, config?: RequestConfig): Promise<T> {
+  return (
+    await request(
+      await secureRequestHandler({
+        method: 'post',
+        url: getUrl(baseUrl, url),
+        data,
+        ...config
+      })
+    )
+  ).data as T
+}
+
 export const put = (url: string, data: any, config?: RequestConfig) =>
   request({
     method: 'put',

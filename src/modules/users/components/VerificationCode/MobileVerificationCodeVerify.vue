@@ -37,6 +37,7 @@ import ButtonTypes from '@/components/ui/forms/buttonTypes'
 import ActionButton from '@/components/ui/forms/ActionButton.vue'
 import { onMounted, onUnmounted } from 'vue'
 import { computed } from '@vue/reactivity';
+import { useRouter } from 'vue-router';
 
 const {
   code,
@@ -53,6 +54,7 @@ const {
   stopTimer
 } = useVerifyVerificationCode()
 const { t } = useI18n()
+const router = useRouter()
 
 const topMessage = t('The verficiation code has been sent to <strong>{0}</strong>. ', mobile)
 const resendMessage = computed(() => t('Resend verification code in <strong>{0}</strong> seconds.', remainingSecondsForResend.value.toString()))
@@ -68,8 +70,17 @@ const onClickChangePhoneNumber = () => {
   changePhoneNumber()
 }
 
-const onClickVerify = () => {
-  verify()
+const onClickVerify = async () => {
+  const result = await verify()
+  if (result.success) {
+    if (!result.isCompleted) {
+      router.push('/register/completion')
+    } else {
+      // TODO: reset password
+      // router.push('/account/reset-password', { token })
+      router.push('/')
+    }
+  }
 }
 
 const onClickResend = () => {

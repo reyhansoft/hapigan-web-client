@@ -153,7 +153,7 @@ test('verify code failed should show error notification', async () => {
   expect(verifyVerificationCode).toBeCalledWith(store.mobile, code.value, store.token)
   expect(setLoggedIn).not.toBeCalled()
   expect(error).toBeCalledWith(ERORR_MESSAGE)
-  expect(result).toBeFalsy()
+  expect(result.success).toBeFalsy()
 })
 
 test('request resending code before next try time should show error notification', async () => {
@@ -247,5 +247,5 @@ test('api shound not be called if code is not valid', async () => {
 
   // assert
   expect(verifyVerificationCode).not.toBeCalled()
-  expect(result).toBeFalsy()
+  expect(result.success).toBeFalsy()
 })

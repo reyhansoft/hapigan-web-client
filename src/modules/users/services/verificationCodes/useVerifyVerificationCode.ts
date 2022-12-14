@@ -60,17 +60,25 @@ const useVerifyVerificationCode = () => {
     },
     async verify () {
       if (!validation.validate()) {
-        return false
+        return { success: false }
       }
       isProcessing.value = true
       try {
-        const result = await verifyVerificationCode(mobile.value, code.value, token.value || '')
-        if (result.success){
-          setLoggedIn(result.result)
+        const { result, success: isSuccess, message } = await verifyVerificationCode(mobile.value, code.value, token.value || '')
+        if (isSuccess){
+          setLoggedIn({
+            name: result.name || '',
+            expirationDateTime: result.expirationDateTime,
+            isCompleted: result.isCompleted,
+            token: result.token
+          })
           success(t('You logged in successfully'))
-          return true
+          return { 
+            success: true,
+            isCompleted: result.isCompleted
+          }
         } else {
-          error(result.message || t('Something went wrong'))
+          error(message || t('Something went wrong'))
         }
       } catch(err) {
         if (err instanceof ApiError) {
@@ -82,7 +90,7 @@ const useVerifyVerificationCode = () => {
       } finally {
         isProcessing.value = false
       }
-      return false
+      return { success: false }
     }
   }
 }

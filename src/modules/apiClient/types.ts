@@ -50,3 +50,8 @@ export interface Api {
   addHeader: AddHeader
   removeHeader: RemoveHeader
 }
+
+export interface BaseApiResult {
+  success: boolean
+  message: string | null
+}

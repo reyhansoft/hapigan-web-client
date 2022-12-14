@@ -1,6 +1,6 @@
 <template>
   <fieldset class="flex flex-col">
-    <label class="font-bold mb-1" v-if="props.label">{{ props.label }}</label>
+    <label class="font-bold mb-1 text-sm" v-if="props.label">{{ props.label }}</label>
     <input 
       :placeholder="props.placeholder"
       v-model="model"
