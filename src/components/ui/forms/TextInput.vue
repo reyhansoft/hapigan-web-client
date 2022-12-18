@@ -4,6 +4,7 @@
     <input 
       :placeholder="props.placeholder"
       v-model="model"
+      :type="props.type"
       class="input"
       :class="classes"
       @focus=""
@@ -33,6 +34,10 @@ const props = defineProps({
   },
   validator: {
     type: Object
+  },
+  type: {
+    type: String,
+    default: 'text'
   }
 })
 

@@ -12,24 +12,30 @@ export type UserState = {
   isInited: boolean,
   isAuthenticated: boolean,
   name: string,
-  isCompleted: boolean
+  isCompleted: boolean,
+  username: string
 }
 
 export type SetAuthenticatedUserModel = {
   name: string,
+  username: string,
   isCompleted: boolean
 }
 
 export type MeResult = {
+  success: boolean
   isAuthenticated: boolean
   token: null | string
   name: null | string
+  username: null | string
   isCompleted: boolean
   expirationDateTime: Date
+  message: null | string
 }
 
 export type CompleteRegistrationRequest = {
-  name: string,
+  username: string,
+  displayName: string,
   password: string
 }
 

@@ -6,4 +6,4 @@ export const getMe = () => get<MeResult>('/account/me', {}, {
   withCredentials: true
 })
 
-export const completeRegistration = (payload: CompleteRegistrationRequest) => spost<BaseApiResult>('/account/complete-registration', payload)
+export const completeRegistration = (payload: CompleteRegistrationRequest) => spost<MeResult>('/account/complete-registration', payload)

@@ -5,7 +5,8 @@ type SetLoggedInModel = {
   name: string,
   isCompleted: boolean,
   token: string,
-  expirationDateTime: Date
+  expirationDateTime: Date,
+  username: string
 }
 const useUserAuth = () => {
   const userStore = useUserStore()
@@ -14,7 +15,8 @@ const useUserAuth = () => {
     setLoggedIn (model: SetLoggedInModel) {
       userStore.setAuthenticatedUser({
         name: model.name,
-        isCompleted: model.isCompleted
+        isCompleted: model.isCompleted,
+        username: model.username
       })
       setToken({
         token: model.token,

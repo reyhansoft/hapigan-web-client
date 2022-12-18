@@ -22,7 +22,7 @@ const useCompoundValidator = (validators: Array<Validator>) : Validator => {
         ? null
         : validators.filter(t => t.isValid.value !== null).every(t => t.isValid.value)
     ),
-    message: computed(() => validators.filter(t => !t.isValid.value).flatMap(t => t.message.value))
+    message: computed(() => Array.from(new Set(validators.filter(t => !t.isValid.value).flatMap(t => t.message.value))))
   }
 }
 

@@ -3,15 +3,22 @@
     class="mx-auto rounded-md bg-slate-50 w-96 p-5 py-10 my-20 shadow">
 		<h1 class="font-bold text-lg">{{ $t('Complete your registration') }}</h1>
 		<TextInput
+      v-model="username"
+      class="mt-5"
+      :validator="usernameValidator"
+      :label="$t('Username')"
+      :placeholder="$t('Username')" />
+    <TextInput
       v-model="name"
       class="mt-5"
       :validator="nameValidator"
-      :label="$t('Display name')"
-      :placeholder="$t('Display name')" />
+      :label="$t('Name')"
+      :placeholder="$t('Name')" />
 
 		<TextInput
       v-model="password"
       class="mt-5"
+      type="password"
       :validator="passwordValidator"
       :label="$t('Password')"
       :placeholder="$t('Password')" />
@@ -19,6 +26,7 @@
 		<TextInput
       v-model="verifyPassword"
       class="mt-5"
+      type="password"
       :validator="passwordEqualValidator"
       :label="$t('Confirm password')"
       :placeholder="$t('Confirm password')" />
@@ -43,10 +51,12 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
-const { 
+const {
+  username,
 	name,
 	password,
 	verifyPassword,
+  usernameValidator,
 	nameValidator,
 	passwordValidator,
 	passwordEqualValidator,

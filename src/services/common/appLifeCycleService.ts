@@ -9,7 +9,7 @@ export type AppLifeCycleService = {
 
 export default {
   onMount: (fn: Hook) => {
-		onMountHooks.push(fn)
+	onMountHooks.push(fn)
   },
 	getOnMountHooks: () => [...onMountHooks]
 }

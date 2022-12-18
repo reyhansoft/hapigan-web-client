@@ -6,7 +6,8 @@ export const useUserStore = defineStore('user', {
     isInited: false,
     isAuthenticated: false,
     name: '',
-    isCompleted: false
+    isCompleted: false,
+    username: ''
   }) as UserState,
   actions: {
     setAuthenticatedUser(state: SetAuthenticatedUserModel) {

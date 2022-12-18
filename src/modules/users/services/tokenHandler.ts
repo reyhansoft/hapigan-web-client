@@ -73,7 +73,8 @@ export const initializeUserToken = async (router: Router) => {
     if (userTokenResult.isAuthenticated) {
       store.setAuthenticatedUser({
         name: userTokenResult.name || '',
-        isCompleted: userTokenResult.isCompleted
+        isCompleted: userTokenResult.isCompleted,
+        username: userTokenResult.username || ''
       })
       _token = {
         token: userTokenResult.token || '',
