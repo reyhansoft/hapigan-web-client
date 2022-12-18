@@ -8,6 +8,7 @@
       v-model="code"
       class="mt-5"
       :label="$t('Verification code')"
+      @keypress.enter="onClickVerify"
       :placeholder="$t('_ _ _ _ _')"
       :validator="codeValidator"/>
     <ActionButton

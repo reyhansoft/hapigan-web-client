@@ -15,12 +15,14 @@ export const useUserStore = defineStore('user', {
       this.isAuthenticated = true
       this.name = state.name
       this.isCompleted = state.isCompleted
+      this.username = state.username
     },
     setGuestUser() {
       this.isInited = true
       this.isAuthenticated = false
       this.name = ''
       this.isCompleted = false
+      this.username = ''
     },
     setRegistrationCompleted () {
       this.isCompleted = true

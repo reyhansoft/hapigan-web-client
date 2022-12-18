@@ -1,9 +1,7 @@
 import { ApiError, RequestConfig, SecureRequestHandlerType } from "@/modules/apiClient/types"
-import { setSecureRequestHandler } from '@/modules/apiClient/baseApiClient'
 import wait from "@/services/common/wait"
-import { Router, useRouter } from "vue-router"
 import { getMe } from "../api/userApi"
-import { useUserStore } from "../stores/userStore"
+
 type Token = {
   token: string
   expirationDateTime: Date
@@ -60,36 +58,4 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
 
 export const setToken = (token: Token) => {
   _token = token
-}
-
-export const initializeUserToken = async (router: Router) => {
-  
-  setSecureRequestHandler(secureRequestHandler)
-  try {
-  
-    const userTokenResult = await getMe()
-    const store = useUserStore()
-
-    if (userTokenResult.isAuthenticated) {
-      store.setAuthenticatedUser({
-        name: userTokenResult.name || '',
-        isCompleted: userTokenResult.isCompleted,
-        username: userTokenResult.username || ''
-      })
-      _token = {
-        token: userTokenResult.token || '',
-        expirationDateTime: userTokenResult.expirationDateTime
-      }
-      if (!userTokenResult.isCompleted) {
-        router.push('/register/completion')
-      }
-    } else {
-      _token = null
-      store.setGuestUser()
-    }
-    return true
-  } catch (e) {
-    console.log(e)
-    return false
-  }
 }

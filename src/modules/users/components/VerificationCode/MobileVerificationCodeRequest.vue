@@ -3,6 +3,7 @@
     <TextInput
       v-model="mobile"
       class="mt-5"
+      @keypress.enter="onClick"
       :validator="mobileValidator"
       :label="$t('Phone number')"
       :placeholder="$t('+9891xxxxxxxx')" />

@@ -3,7 +3,7 @@
         <li>is authenicated: {{ userStore.isAuthenticated }}</li>
         <li>is completed: {{ userStore.isCompleted }}</li>
         <li>name: {{ userStore.name }}</li>
-        <li>username: {{ userStore.name }}</li>
+        <li>username: {{ userStore.username }}</li>
     </ul>
 </template>
 
