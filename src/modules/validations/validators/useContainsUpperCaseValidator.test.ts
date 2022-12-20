@@ -1,6 +1,13 @@
-import { test } from 'vitest'
+import { test, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import useContainsUppercaseValidator from './useContainsUppercaseValidator'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
 
 test.each([
   ['text With upper case', true ],

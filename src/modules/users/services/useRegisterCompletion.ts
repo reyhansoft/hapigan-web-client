@@ -27,36 +27,35 @@ const useRegisterCompletion = () => {
   const isProcessing  = ref(false)
 
   const usernameValidator = useCompoundValidator([
-    useRequired(username, 'Username is required'),
-    useAllowedCharacters(username, userOptions.user.allowedUserNameCharacters, userOptions.user.allowedUserNameCharactersMessage),
-    useLengthValidator(username, userOptions.user.minUsernameLength, userOptions.user.maxUsernameLength),
-    useUniqueCharsValidator(username, userOptions.user.usernameRequiredUniqueChars)
+    useRequired(username, t('Username')),
+    useAllowedCharacters(username, userOptions.user.allowedUserNameCharacters, t('Username'), userOptions.user.allowedUserNameCharactersMessage),
+    useLengthValidator(username, userOptions.user.minUsernameLength, userOptions.user.maxUsernameLength, t('Username')),
+    useUniqueCharsValidator(username, userOptions.user.usernameRequiredUniqueChars, t('Username'))
   ])
   const nameValidator = useCompoundValidator([
-    useRequired(name, 'Name is required'),
-    useLengthValidator(name, 0, userOptions.user.maxDisplayNameLength)
+    useRequired(name, t('Name')),
+    useLengthValidator(name, 0, userOptions.user.maxDisplayNameLength, t('Name'))
   ]) 
   const passwordValidators = [
-    useRequired(password, 'Password is required'),
-    useRegexValidator(password, /[0-9a-zA-Z]+/, ''),
-    useUniqueCharsValidator(password, userOptions.password.requiredUniqueChars),
-    useLengthValidator(password, userOptions.password.requiredLength)
+    useRequired(password, t('Password')),
+    useUniqueCharsValidator(password, userOptions.password.requiredUniqueChars, t('Password')),
+    useLengthValidator(password, userOptions.password.requiredLength, Number.MAX_VALUE, t('Password'))
   ]
   if (userOptions.password.requireUppercase) {
-    passwordValidators.push(useContainsUpperCaseValidator(password))
+    passwordValidators.push(useContainsUpperCaseValidator(password, t('Password')))
   }
   if (userOptions.password.requireLowercase) {
-    passwordValidators.push(useContainsLowerCaseValidator(password))
+    passwordValidators.push(useContainsLowerCaseValidator(password, t('Password')))
   }
   if (userOptions.password.requireDigit) {
-    passwordValidators.push(useContainsDigitValidator(password))
+    passwordValidators.push(useContainsDigitValidator(password, t('Password')))
   }
   if (userOptions.password.requireNonAlphanumeric) {
-    passwordValidators.push(useRegexValidator(password, /[^a-zA-Z0-9]+/, 'Passwords must have at least one non alphanumeric character.'))
+    passwordValidators.push(useRegexValidator(password, /[^a-zA-Z0-9]+/, t('Password')))
   }
   const passwordValidator = useCompoundValidator(passwordValidators)
   
-  const passwordEqualValidator = useEqualValidator(password, verifyPassword, 'Passwords do no match')
+  const passwordEqualValidator = useEqualValidator(password, verifyPassword, t('Passwords do no match'))
 
   const validation = useValidation([
     passwordEqualValidator,

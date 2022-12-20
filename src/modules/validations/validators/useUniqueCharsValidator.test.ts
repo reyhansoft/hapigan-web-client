@@ -1,6 +1,13 @@
-import { test } from 'vitest'
+import { test, beforeEach } from 'vitest'
 import { nextTick, ref } from 'vue'
 import useUniqueCharsValidator from './useUniqueCharsValidator'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
 
 test('required unique chars greater than zero', async () => {
   // arrange
@@ -36,8 +43,9 @@ test('message should contains count', async () => {
   // arrange
   const model = ref('test')
   const countOfUniqueChars = 5
-  const validator = useUniqueCharsValidator(model, countOfUniqueChars)
-  const expectedMessage = `Passwords must use at least ${countOfUniqueChars} different characters.`
+  const name = 'Passwords'
+  const validator = useUniqueCharsValidator(model, countOfUniqueChars, name)
+  const expectedMessage = `${name} must use at least ${countOfUniqueChars} different characters.`
   // act
   validator.touched()
   

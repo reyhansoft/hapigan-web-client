@@ -1,6 +1,13 @@
-import { test } from 'vitest'
+import { test, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import useContainsDigitValidator from './useContainsDigitValidator'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
 
 test.each([
   ['Contains digit 1', true],

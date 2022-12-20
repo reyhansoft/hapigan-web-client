@@ -1,6 +1,13 @@
-import { test } from 'vitest'
+import { test, beforeEach } from 'vitest'
 import useEqualValidator from './useEqualValidator'
 import { nextTick, ref } from 'vue'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
 
 test('values do not match', async () => {
   // arrange

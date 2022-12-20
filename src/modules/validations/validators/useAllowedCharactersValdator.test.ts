@@ -1,6 +1,13 @@
-import { test } from 'vitest'
+import { createPinia, Pinia, setActivePinia } from 'pinia'
+import { test, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import useAllowedCharacters from './useAllowedCharactersValdator'
+
+let pinia: Pinia = createPinia()
+beforeEach(() => {
+  pinia = createPinia()
+  setActivePinia(pinia)
+})
 
 test('contains invalid characters', () => {
   // arrange
