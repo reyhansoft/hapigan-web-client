@@ -6,7 +6,7 @@ const useUniqueCharsValidator = (model: Ref, countOfUniqueChars: number, message
   const isValid = (value: any): boolean => 
     value !== undefined &&
     value !== null &&
-    (countOfUniqueChars < 1 || (new Set(value.split('')).size >= countOfUniqueChars))
+    (countOfUniqueChars < 1 || (new Set(value).size >= countOfUniqueChars))
 
   return useBaseValidator(model, message, isValid)
 }

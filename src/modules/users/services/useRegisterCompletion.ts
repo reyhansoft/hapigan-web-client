@@ -28,9 +28,14 @@ const useRegisterCompletion = () => {
 
   const usernameValidator = useCompoundValidator([
     useRequired(username, 'Username is required'),
-    useAllowedCharacters(username, userOptions.user.allowedUserNameCharacters, userOptions.user.allowedUserNameCharactersMessage)
+    useAllowedCharacters(username, userOptions.user.allowedUserNameCharacters, userOptions.user.allowedUserNameCharactersMessage),
+    useLengthValidator(username, userOptions.user.minUsernameLength, userOptions.user.maxUsernameLength),
+    useUniqueCharsValidator(username, userOptions.user.usernameRequiredUniqueChars)
   ])
-  const nameValidator = useRequired(name, 'Name is required')
+  const nameValidator = useCompoundValidator([
+    useRequired(name, 'Name is required'),
+    useLengthValidator(name, 0, userOptions.user.maxDisplayNameLength)
+  ]) 
   const passwordValidators = [
     useRequired(password, 'Password is required'),
     useRegexValidator(password, /[0-9a-zA-Z]+/, ''),

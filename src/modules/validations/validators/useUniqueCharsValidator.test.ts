@@ -42,5 +42,6 @@ test('message should contains count', async () => {
   validator.touched()
   
   // assert
+  expect(validator.isValid.value).toBeFalsy()
   expect(validator.message.value[0]).toBe(expectedMessage)
 })

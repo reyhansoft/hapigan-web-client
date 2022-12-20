@@ -34,6 +34,18 @@ const useUserOptions = () => {
       get requireUniqueEmail() {
         return optionsStore.getOption<boolean>('Identity:User:RequireUniqueEmail', false)
       },
+      get maxUsernameLength() {
+        return optionsStore.getOption<number>('Identity:User:MaxUsernameLength', 3)
+      },
+      get minUsernameLength() {
+        return optionsStore.getOption<number>('Identity:User:MinUsernameLength', 32)
+      },
+      get maxDisplayNameLength() {
+        return optionsStore.getOption<number>('Identity:User:MaxDisplayNameLength', 32)
+      },
+      get usernameRequiredUniqueChars() {
+        return optionsStore.getOption<number>('Identity:User:UsernameRequiredUniqueChars', 3)
+      },
     }
   }
 }
