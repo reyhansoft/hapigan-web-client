@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { I18nState } from '../types'
+import { I18nState, Language, TextTranslations } from '../types'
 
 const useI18nStore = defineStore('i18n', {
   state: () => ({
@@ -9,6 +9,14 @@ const useI18nStore = defineStore('i18n', {
   getters: {
     translate: (state) =>
       (message: string) => state.messages[message] || message
+  },
+  actions: {
+    setLanguages(languages: Array<Language>) {
+      this.languages = languages
+    },
+    setTranslatons(translations: TextTranslations) {
+      this.messages = translations
+    }
   }
 })
 

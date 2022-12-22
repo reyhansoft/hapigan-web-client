@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { test, expect, beforeEach } from 'vitest'
-import useI18nStore from './useI18nStore'
+import useI18nStore from '../stores/useI18nStore'
 
 beforeEach(() => {
   setActivePinia(createPinia())

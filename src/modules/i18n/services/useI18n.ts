@@ -1,4 +1,4 @@
-import useI18nStore from "./useI18nStore"
+import useI18nStore from "../stores/useI18nStore"
 const useI18n = () => {
   const store = useI18nStore()
   return {

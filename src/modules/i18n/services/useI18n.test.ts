@@ -1,5 +1,5 @@
 import { test, expect, afterEach } from 'vitest'
-import useI18nStore from './useI18nStore'
+import useI18nStore from '../stores/useI18nStore'
 import useI18n from './useI18n'
 
 vi.mock('./useI18nStore', () => {
