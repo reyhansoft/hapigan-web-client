@@ -9,16 +9,26 @@ import useContainsUpperCaseValidator from '@/modules/validations/validators/useC
 import useEqualValidator from '@/modules/validations/validators/useEqualValidator'
 import useLengthValidator from '@/modules/validations/validators/useLengthValidator'
 import useUniqueCharsValidator from '@/modules/validations/validators/useUniqueCharsValidator'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { completeRegistration } from '../api/userApi'
 import { useUserStore } from '../stores/userStore'
 import useUserOptions from './useUserOptions'
 import useUserAuth from './useUserAuth'
+import { useRouter } from 'vue-router'
 
 const useRegisterCompletion = () => {
   const { error } = useNotifications()
   const { t } = useI18n()
   const userOptions = useUserOptions()
+  const store = useUserStore()
+  const router = useRouter()
+
+  onMounted(() => {
+    if(!store.isAuthenticated || store.isCompleted) {
+      // TODO: redirect to the specified page
+      router.push('/')
+    }
+  })
 
   const name = ref('')
   const username = ref('')

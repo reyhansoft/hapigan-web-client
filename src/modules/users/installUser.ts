@@ -7,7 +7,7 @@ import Register from './pages/Register.vue'
 import RegisterCompletion from './pages/RegisterCompletion.vue'
 import initializeUserToken from './services/initializeUserToken'
 import { secureRequestHandler } from './services/tokenHandler'
-
+import Login from './pages/Login.vue'
 export default {
   install: (app: App<Element>, options: { router: Router, appLifeCycleService: AppLifeCycleService }) => {
     
@@ -17,6 +17,7 @@ export default {
     })
 
     options.router.addRoute('user-register', { path: '/register', component: Register })
+    options.router.addRoute('user-login', { path: '/login', component: Login })
     options.router.addRoute('user-register-completion', { path: '/register/completion', component: RegisterCompletion })
   }
 }

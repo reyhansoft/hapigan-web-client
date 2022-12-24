@@ -14,5 +14,17 @@
 
 <script lang="ts" setup>
 import MainLogo from '@/components/app/MainLogo.vue'
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import MobileVerificationCodeVue from '../components/VerificationCode/MobileVerificationCode.vue'
+import { useUserStore } from '../stores/userStore';
+
+const store = useUserStore()
+const router = useRouter()
+
+onMounted(() => {
+  if (store.isAuthenticated) {
+    router.push('/')
+  }
+})
 </script>

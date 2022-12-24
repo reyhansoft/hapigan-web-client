@@ -39,6 +39,12 @@ export type CompleteRegistrationRequest = {
   password: string
 }
 
+export type LogInRequest = {
+  username: string,
+  password: string,
+  isPersistent: boolean
+}
+
 export enum VerificationCodeStep {
   Request,
   Verify

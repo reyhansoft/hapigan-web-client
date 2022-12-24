@@ -7,6 +7,7 @@
       class="mt-5"
       :validator="usernameValidator"
       :label="$t('Username')"
+      dir="ltr"
       :placeholder="$t('Username')" />
     <TextInput
       v-model="name"
@@ -18,6 +19,7 @@
 		<TextInput
       v-model="password"
       class="mt-5"
+      dir="ltr"
       type="password"
       :validator="passwordValidator"
       :label="$t('Password')"
@@ -26,6 +28,7 @@
 		<TextInput
       v-model="verifyPassword"
       class="mt-5"
+      dir="ltr"
       type="password"
       :validator="passwordEqualValidator"
       :label="$t('Confirm password')"

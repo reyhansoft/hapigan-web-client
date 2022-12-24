@@ -8,6 +8,7 @@
       class="input"
       :class="classes"
       @focus=""
+      :dir="props.dir"
       />
       <div 
         class="text-red-500 text-sm mt-1"
@@ -38,6 +39,10 @@ const props = defineProps({
   type: {
     type: String,
     default: 'text'
+  },
+  dir: {
+    type: String,
+    default: undefined
   }
 })
 
