@@ -20,7 +20,7 @@ function getUrl(baseUrl: string, url: string): string {
 
 const headers: { [key: string]: string } = {}
 
-let secureRequestHandler: SecureRequestHandlerType = (config: RequestConfig) =>
+let secureRequestHandler: SecureRequestHandlerType = (config: RequestConfig, tokenRequired: boolean) =>
   new Promise((resolve, reject) => resolve(config))
 
 function request(config: RequestConfig) {
@@ -59,12 +59,14 @@ function request(config: RequestConfig) {
 
 export async function get<T> (url: string, data: any = {}, config?: RequestConfig) : Promise<T> {
   return (
-    await request({
+    await request(
+      await secureRequestHandler({
       method: 'get',
       url: getUrl(baseUrl, url),
       params: data,
       ...config
-    })
+      }, false)
+    )
   ).data as T
 }
 
@@ -76,19 +78,21 @@ export async function sget<T> (url: string, data: any = {}, config?: RequestConf
         url: getUrl(baseUrl, url),
         params: data,
         ...config
-      })
+      }, true)
     )
   ).data as T
 }
 
 export async function post<T>(url: string, data: any, config?: RequestConfig): Promise<T> {
   return (
-    await request({
-      method: 'post',
-      url: getUrl(baseUrl, url),
-      data,
-      ...config
-    })
+    await request(
+      await secureRequestHandler({
+        method: 'post',
+        url: getUrl(baseUrl, url),
+        data,
+        ...config
+      }, false)
+    )
   ).data as T
 }
 
@@ -100,7 +104,7 @@ export async function spost<T>(url: string, data: any, config?: RequestConfig): 
         url: getUrl(baseUrl, url),
         data,
         ...config
-      })
+      }, true)
     )
   ).data as T
 }

@@ -9,10 +9,16 @@ type Token = {
 let _token: null | Token = null 
 let _isRenewingToken = false
 
-export const secureRequestHandler: SecureRequestHandlerType = async (config: RequestConfig) => {
+export const secureRequestHandler: SecureRequestHandlerType = async (config: RequestConfig, tokenRequired: boolean) => {
   if (_token === null) {
     // ?
-    throw new ApiError("Unauthorized access", -1)
+    if (tokenRequired) {
+      throw new ApiError("Unauthorized access", -1)
+    } else {
+      return {
+        ...config
+      }
+    }
   }
   console.log('post secure')
   if (new Date() > _token!.expirationDateTime) {
@@ -44,7 +50,7 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       while(_isRenewingToken) {
         await wait(10)
       }
-      return await secureRequestHandler(config)
+      return await secureRequestHandler(config, tokenRequired)
     }
   }
   console.log('token is valid', _token)

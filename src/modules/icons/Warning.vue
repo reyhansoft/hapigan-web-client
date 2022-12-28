@@ -1,8 +1,9 @@
 <template>
-    <svg viewBox="0 -4.02 60.031 60.031" xmlns="http://www.w3.org/2000/svg"><path :style="{'fill': props.fill}" style="fill-rule: evenodd;" d="M214.413,746a4.455,4.455,0,0,1-3.84-2.166,4.249,4.249,0,0,1,0-4.334l25.572-43.331a4.483,4.483,0,0,1,7.679,0L269.4,739.5a4.249,4.249,0,0,1,0,4.334,4.452,4.452,0,0,1-3.84,2.166H214.413ZM240,706a4,4,0,0,0-4,4v16a4,4,0,0,0,8,0V710A4,4,0,0,0,240,706Zm0,36a4,4,0,1,0-4-4A4,4,0,0,0,240,742Z" id="attention" transform="translate(-209.969 -694)"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 143.95"><g data-name="Layer 2"><g data-name="Layer 1"><ellipse :class="colorClass1" cx="72" cy="71.98" rx="72" ry="71.98"/><path :class="colorClass2" d="M60.18,42.9a16.47,16.47,0,0,1,0,22.73h0a16.37,16.37,0,1,0,23.64,0h0a16.47,16.47,0,0,1,0-22.73h0a16.37,16.37,0,1,0-23.64,0Z"/><circle :class="colorClass2" cx="72.11" cy="113.82" r="14.96"/><circle :class="colorClass1" cx="72.58" cy="113.66" r="8.74"/></g></g></svg>
 </template>
 <script setup lang="ts">
 const props = defineProps({
-    fill: { type: String, default: '#bf873e'}
+    colorClass1: { type: String, default: 'cls-1'},
+    colorClass2: { type: String, default: 'cls-2'}
 })
 </script>
