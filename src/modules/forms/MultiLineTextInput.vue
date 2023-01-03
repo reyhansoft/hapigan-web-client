@@ -1,15 +1,16 @@
 <template>
   <fieldset class="flex flex-col">
     <label class="font-bold mb-1 text-sm" v-if="props.label">{{ props.label }}</label>
-    <input 
+    <span v-if="props.description" class="text-sm mb-1">{{ props.description }}</span>
+    <textarea 
       :placeholder="props.placeholder"
       v-model="model"
-      :type="props.type"
       class="input"
       :class="classes"
       @focus=""
+      ref="el"
       :dir="props.dir"
-      />
+      ></textarea>
       <div 
         class="text-red-500 text-sm mt-1"
         v-if="props.validator && props.validator.isValid.value === false"
@@ -20,7 +21,7 @@
 <script lang="ts" setup>
 import { Validator } from '@/modules/validations/types';
 import { computed } from '@vue/reactivity';
-import { defineProps, ref, defineEmits, watch } from 'vue'
+import { defineProps, ref, defineEmits, watch, Ref, TextareaHTMLAttributes, onMounted } from 'vue'
 
 const props = defineProps({
   modelValue: {
@@ -36,15 +37,27 @@ const props = defineProps({
   validator: {
     type: Object
   },
-  type: {
-    type: String,
-    default: 'text'
+  description: {
+    type: String
   },
   dir: {
     type: String,
     default: undefined
+  },
+  autoHieght:{
+    type: Boolean,
+    default: true
+  },
+  minLines: {
+    type: Number,
+    default: 3
+  },
+  maxLines: {
+    type: Number,
+    default: 5
   }
 })
+const el: Ref<TextareaHTMLAttributes | null> = ref(null)
 
 const classes = computed(() => ({
   '!border-red-500': props.validator != null && props.validator.isValid.value === false,
@@ -57,21 +70,35 @@ const onFocus = () => {
   }
 }
 
+const makeAutoHeight = () => {
+  if (props.autoHieght && el.value) {
+    let lines = 1 + (model.value.match(/\n/g) || []).length
+    if (lines < props.minLines) {
+      lines = props.minLines
+    }
+    if (lines > props.maxLines) {
+      lines = props.maxLines
+    }
+    el.value.rows = lines
+    // const currentLineNumber = (el.value.value?.toString() || '').substr(0, (el.value as any).selectionStart).split("\n").length
+  }
+}
+
 const emits = defineEmits(['update:modelValue'])
 const model = ref(props.modelValue)
 
 watch(model, () => {
   emits('update:modelValue', model.value)
+  makeAutoHeight()
 })
 
 watch(props, (newvalue) => {
   if (model.value !== newvalue.modelValue) {
     model.value = newvalue.modelValue
+    makeAutoHeight()
   }
 })
+onMounted(() => {
+  makeAutoHeight()
+})
 </script>
-<style lang="postcss">
-.input {
-  @apply block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:outline-none;
-}
-</style>

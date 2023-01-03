@@ -1,25 +1,36 @@
 import useApiErrorHandlingBlock from "@/modules/errors/useApiErrorHandlingBlock"
-import { ref, watch } from "vue"
+import useUser from "@/modules/users/services/useUser"
+import { computed, Ref, ref, watch } from "vue"
 import { searchRepositories } from "../api/repositoriesApi"
 import { Repository } from "../types"
 
-const useSearchRepositories = () => {
+const useSearchRepositories = (options: {
+  onlyMyRepositories: boolean,
+  allowedActions: Array<number>
+} = {
+  onlyMyRepositories: true,
+  allowedActions: []
+}) => {
   const isProcessing = ref(false)
   const start = ref(0)
   const query = ref('')
-  const onlyMyRepositories = true
   const searchTimerFalg = ref(-1)
   const hasMore = ref(false)
   const items = ref<Array<Repository>>([])
   const lastQuery = ref('')
+  const onlyMyRepositories = ref(options.onlyMyRepositories)
+  const user = useUser()
+  const memberId = computed(() => onlyMyRepositories.value ? user.id: null)
+
   const search = async () => {
     isProcessing.value = true
     await useApiErrorHandlingBlock(async () => {
       lastQuery.value = query.value
       const result = await searchRepositories({
         start: start.value,
-        onlyMyRepositories: true,
-        query: query.value
+        memberId: memberId.value,
+        query: query.value,
+        allowedActions: options.allowedActions
       })
       items.value = result.repositories
       hasMore.value = result.hasMore

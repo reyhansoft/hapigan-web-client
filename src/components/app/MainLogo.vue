@@ -3,6 +3,6 @@
 </template>
 
 <style scoped>
-.cls-1{fill:#632b90;}
+.cls-1{fill:#6d28d9;}
 .cls-2{fill:#fff;}
 </style>

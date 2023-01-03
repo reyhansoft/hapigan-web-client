@@ -1,6 +1,4 @@
 <template>
-    <MainMenu />
-
     <div class="max-w-[740px] m-auto">
         <TabBar :items="tabs" />
         <SearchRepositories></SearchRepositories>

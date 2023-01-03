@@ -2,6 +2,7 @@ import { useUserStore } from "../stores/userStore"
 import { setToken } from "./tokenHandler"
 
 type SetLoggedInModel = {
+  id: string,
   name: string,
   isCompleted: boolean,
   token: string,
@@ -14,6 +15,7 @@ const useUserAuth = () => {
   return {
     setLoggedIn (model: SetLoggedInModel) {
       userStore.setAuthenticatedUser({
+        id: model.id,
         name: model.name,
         isCompleted: model.isCompleted,
         username: model.username

@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   define: {
-    BASE_URL: JSON.stringify('http://dapi.hapigan.ir:49154/')
+    BASE_URL: JSON.stringify('http://dapi.hapigan.ir:49153/')
   },
   resolve: {
     alias: {

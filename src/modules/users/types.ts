@@ -9,6 +9,7 @@ export type VerificationCodeState = {
 }
 
 export type UserState = {
+  id: string,
   isInited: boolean,
   isAuthenticated: boolean,
   name: string,
@@ -17,6 +18,7 @@ export type UserState = {
 }
 
 export type SetAuthenticatedUserModel = {
+  id: string,
   name: string,
   username: string,
   isCompleted: boolean
@@ -24,13 +26,16 @@ export type SetAuthenticatedUserModel = {
 
 export type MeResult = {
   success: boolean
-  isAuthenticated: boolean
-  token: null | string
-  name: null | string
-  username: null | string
-  isCompleted: boolean
-  expirationDateTime: Date
   message: null | string
+  result: {
+    id: string,
+    isAuthenticated: boolean
+    token: null | string
+    name: null | string
+    username: null | string
+    isCompleted: boolean
+    expirationDateTime: Date
+  }
 }
 
 export type CompleteRegistrationRequest = {
@@ -63,6 +68,8 @@ export interface RequestVerificationCodeReponse extends BaseApiResult {
 
 export interface VerifyVerificationCodeResponse extends BaseApiResult {
   result: {
+    id: string
+    username: string
     name: null | string
     token: string
     isCompleted: boolean,

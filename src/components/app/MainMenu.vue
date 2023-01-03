@@ -20,7 +20,7 @@ import MainLogo from './MainLogo.vue'
 </script>
 
 <style>
-  .cls-1{fill:#632b90;}
+  .cls-1{fill:#6d28d9;}
   .cls-2{fill:#fff;}
   .cls-3{fill:url(#linear-gradient);}
   .cls-4{fill:url(#linear-gradient-2);}

@@ -40,19 +40,21 @@ const useLogin = () => {
 
     isProcessing.value = true
     await useApiErrorHandlingBlock(async () => {
-      const result = await logIn({
+      const { success, result, message } = await logIn({
         username: username.value,
         password: password.value,
         isPersistent: false
       })
-      if (result.success) {
+      if (success) {
         setLoggedIn({
+          id: result.id,
           isCompleted: result.isCompleted,
           expirationDateTime: result.expirationDateTime,
           name: result.name || '',
           token: result.token || '',
           username: result.username || ''
         })
+        console.log('logged in', result)
         if (result.isCompleted) {
           // TODO: redirect to specified path
           router.push('/')
@@ -60,7 +62,7 @@ const useLogin = () => {
           router.push('/register/completion')
         }
       }
-      return result
+      return { success, message }
     }, undefined, t('You logged in successfully'))
     isProcessing.value = false
   }

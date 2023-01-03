@@ -20,18 +20,16 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       }
     }
   }
-  console.log('post secure')
   if (new Date() > _token!.expirationDateTime) {
     // token is expired
-    console.log('token is expired')
     if (!_isRenewingToken) {
       _isRenewingToken = true
       try{
-        const userTokenResult = await getMe()
-        if (userTokenResult.isAuthenticated) {
+        const { success, result } = await getMe()
+        if (success && result.isAuthenticated) {
           _token = {
-            token: userTokenResult.token || '',
-            expirationDateTime: userTokenResult.expirationDateTime
+            token: result.token || '',
+            expirationDateTime: result.expirationDateTime
           }
         } else {
           _token = null
@@ -53,7 +51,6 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       return await secureRequestHandler(config, tokenRequired)
     }
   }
-  console.log('token is valid', _token)
   return {
     ...config,
     headers: {

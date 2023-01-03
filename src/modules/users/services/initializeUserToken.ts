@@ -5,18 +5,21 @@ import useUserAuth from "./useUserAuth"
 const initializeUserToken = async (router: Router) => {
   
   try {
-    const userTokenResult = await getMe()
+    const { success, result } = await getMe()
     const { setLoggedIn, setSignedOut } = useUserAuth()
-    if (userTokenResult.isAuthenticated) {
-      setLoggedIn({
-        expirationDateTime: userTokenResult.expirationDateTime,
-        name: userTokenResult.name || '',
-        isCompleted: userTokenResult.isCompleted,
-        username: userTokenResult.username || '',
-        token: userTokenResult.token || ''
-      })
-      if (!userTokenResult.isCompleted) {
-        router.push('/register/completion')
+    if (success) {
+      if (result.isAuthenticated) {
+        setLoggedIn({
+          id: result.id,
+          expirationDateTime: result.expirationDateTime,
+          name: result.name || '',
+          isCompleted: result.isCompleted,
+          username: result.username || '',
+          token: result.token || ''
+        })
+        if (!result.isCompleted) {
+          router.push('/register/completion')
+        }
       }
     } else {
       setSignedOut()

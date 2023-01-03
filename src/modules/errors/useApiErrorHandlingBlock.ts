@@ -7,23 +7,24 @@ const useApiErrorHandlingBlock = async (action: () => Promise<any>, errorMessage
   const { error, success } = useNotifications()
   const { t } = useI18n()
 
+  let message = t('Something went wrong')
   try {
     const result = await action()
     if (result.success && successMessage) {
       success(successMessage)
-      return true
-    } else if (result.error && errorMessage) {
-      error(errorMessage)
+    } else if (result.message || errorMessage) {
+      error(result.message || errorMessage || t('Failed to complete the action'))
     }
+    return result
   } catch(e: any) {
     if (e instanceof ApiError) {
+      message = e.message
       error(e.message)
     } else {
-      console.log(e)
-      error(errorMessage || t('Something went wrong'))
+      error(errorMessage || message)
     }
   }
-  return false
+  return { success: false, message }
 }
 
 export default useApiErrorHandlingBlock

@@ -1,3 +1,5 @@
+import { BaseApiResult } from "../apiClient/types"
+
 export type Repository = {
   id: number,
   parentId: number,
@@ -32,13 +34,26 @@ export type Profile = {
   displayName: string
 }
 
-export type SearchRepoistoriesResult = {
+export interface SearchRepoistoriesResult extends BaseApiResult {
   hasMore: boolean,
   repositories: Array<Repository>
 }
 
 export type SearchRepositoriesPayload = {
-  onlyMyRepositories: boolean,
+  memberId: string | null,
   query: string | null,
-  start: number
+  start: number,
+  allowedActions: Array<number>
+}
+
+export type CreateRepositoryPayload = {
+  name: string,
+  title: string,
+  description: string,
+  parentId: string | null,
+  visibility: number
+}
+
+export interface CreateRepositoryResult extends BaseApiResult {
+
 }

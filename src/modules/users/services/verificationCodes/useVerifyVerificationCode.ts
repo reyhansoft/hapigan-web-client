@@ -67,10 +67,12 @@ const useVerifyVerificationCode = () => {
         const { result, success: isSuccess, message } = await verifyVerificationCode(mobile.value, code.value, token.value || '')
         if (isSuccess){
           setLoggedIn({
+            id: result.id,
             name: result.name || '',
             expirationDateTime: result.expirationDateTime,
             isCompleted: result.isCompleted,
-            token: result.token
+            token: result.token,
+            username: result.username
           })
           success(t('You logged in successfully'))
           return { 
