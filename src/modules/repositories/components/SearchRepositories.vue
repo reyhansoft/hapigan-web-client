@@ -46,7 +46,7 @@ import { Repository } from '../types';
 
 const props = defineProps({
   onlyMyRepositories: { type: Boolean, default: true },
-  allowedActions: { type: Array<number>, default: [] },
+  allowedActions: { type: Array<string>, default: [] },
   type: { type: String, default: 'full' }
 })
 

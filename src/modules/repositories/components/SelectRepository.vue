@@ -24,7 +24,7 @@ import CloseIcon from '@/modules/icons/Close.vue'
 const props = defineProps({
   label: { type: String, default: '' },
   placeholder: { type: String, default: '' },
-  allowedActions: { type: Array<number>, default: []},
+  allowedActions: { type: Array<string>, default: []},
   modelValue: {
     type: Object as PropType<Repository | null>,
     required: true

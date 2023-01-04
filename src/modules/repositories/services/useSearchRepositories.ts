@@ -6,7 +6,7 @@ import { Repository } from "../types"
 
 const useSearchRepositories = (options: {
   onlyMyRepositories: boolean,
-  allowedActions: Array<number>
+  allowedActions: Array<string>
 } = {
   onlyMyRepositories: true,
   allowedActions: []

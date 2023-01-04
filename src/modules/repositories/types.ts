@@ -43,7 +43,7 @@ export type SearchRepositoriesPayload = {
   memberId: string | null,
   query: string | null,
   start: number,
-  allowedActions: Array<number>
+  allowedActions: Array<string>
 }
 
 export type CreateRepositoryPayload = {

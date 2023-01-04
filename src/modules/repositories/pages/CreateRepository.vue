@@ -1,17 +1,19 @@
 <template>
-  <div>
+  <div class="mb-5">
     <h1 class="text-2xl">{{ $t('Create a new repository') }}</h1>
     <div class="mt-3">
       {{ $t('A repository is a place users can share their knowledge') }}
     </div>
-    <div class="mt-8 flex flex-row">
+    <div class="mt-8 flex flex-row" dir="ltr">
       <SelectRepository 
+        class="grow"
         :label="$t('Parent')"
-        :placeholder="$t('Top level')"
+        :placeholder="$t('Without parent')"
         v-model="parent"
-        :allowed-actions="[1]" />
+        :allowed-actions="['repository.create_sub']" />
       <div class="flex flex-col px-2 pb-1"><div>&nbsp;</div><div class="text-3xl">/</div></div>
       <TextInput
+        class="grow"
         v-model="name"
         :validator="nameValidator"
         :label="$t('Repository name')"></TextInput>
