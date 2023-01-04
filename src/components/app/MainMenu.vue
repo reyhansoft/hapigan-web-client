@@ -1,5 +1,5 @@
 <template>
-  <header class="w-100 py-3 bg-slate-50 shadow sticky top-0">
+  <header class="w-100 py-3 bg-slate-50 shadow sticky top-0 z-10">
     <nav class="mx-5 flex items-center">
       <a href="/">
         <MainLogo class="h-[32px]" />

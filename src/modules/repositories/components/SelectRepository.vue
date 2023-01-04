@@ -1,12 +1,12 @@
 <template>
-  <div class="relative w-32" @click.stop>
+  <div class="relative" @click.stop>
     <label class="font-bold mb-1 text-sm" v-if="props.label">{{ props.label }}</label>
     <div class="input cursor-pointer !flex flex-row items-center" @click="onClick">
       <a href="javascript:" class="grow overflow-hidden text-ellipsis whitespace-nowrap">{{ placeholder }}</a>
       <ChevronDown class="w-3 h-3 rtl:mr-2 ltr:ml-2" v-if="props.modelValue === null" />
       <CloseIcon class="w-4 h-4 rtl:mr-2 ltr:ml-2" @click="onUnselect" v-else />
     </div>
-    <div class="absolute w-64 rounded shadow p-3 mt-2 bg-gray-50 max-h-60 overflow-y-auto" v-if="searchMode">
+    <div class="absolute w-full rounded shadow p-3 mt-2 bg-gray-50 max-h-60 overflow-y-auto" v-if="searchMode">
       <SearchRepositories
         type="summary"
         :allowed-actions="props.allowedActions"
