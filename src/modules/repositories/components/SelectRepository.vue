@@ -26,8 +26,7 @@ const props = defineProps({
   placeholder: { type: String, default: '' },
   allowedActions: { type: Array<string>, default: []},
   modelValue: {
-    type: Object as PropType<Repository | null>,
-    required: true
+    type: Object as PropType<Repository | null>
   }
 })
 const emits = defineEmits(['update:modelValue'])
