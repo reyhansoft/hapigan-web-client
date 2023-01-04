@@ -8,6 +8,12 @@ export interface RequestConfig {
   withCredentials?: boolean
 }
 
+export enum SecureLevel {
+  Anonymous,
+  Optional,
+  Required
+}
+
 export class RequestResult {
   status = 0
   data: any

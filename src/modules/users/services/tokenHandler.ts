@@ -20,7 +20,7 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       }
     }
   }
-  if (new Date() > _token!.expirationDateTime) {
+  if (new Date() > new Date(_token!.expirationDateTime)) {
     // token is expired
     if (!_isRenewingToken) {
       _isRenewingToken = true
@@ -51,6 +51,7 @@ export const secureRequestHandler: SecureRequestHandlerType = async (config: Req
       return await secureRequestHandler(config, tokenRequired)
     }
   }
+
   return {
     ...config,
     headers: {

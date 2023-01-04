@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { RequestConfig, RequestResult, ApiError, Api, SecureRequestHandlerType } from './types'
+import { RequestConfig, RequestResult, ApiError, Api, SecureRequestHandlerType, SecureLevel } from './types'
 
 let baseUrl = BASE_URL
 
@@ -57,15 +57,27 @@ function request(config: RequestConfig) {
     })
 }
 
-export async function get<T> (url: string, data: any = {}, config?: RequestConfig) : Promise<T> {
+export async function get<T> (
+  url: string,
+  data: any = {},
+  config?: RequestConfig,
+  level: SecureLevel = SecureLevel.Optional
+) : Promise<T> {
   return (
     await request(
-      await secureRequestHandler({
-      method: 'get',
-      url: getUrl(baseUrl, url),
-      params: data,
-      ...config
-      }, false)
+      level === SecureLevel.Anonymous
+        ? {
+          method: 'get',
+          url: getUrl(baseUrl, url),
+          params: data,
+          ...config
+        }
+        : await secureRequestHandler({
+          method: 'get',
+          url: getUrl(baseUrl, url),
+          params: data,
+          ...config
+        }, level === SecureLevel.Required)
     )
   ).data as T
 }
